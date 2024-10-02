@@ -4,6 +4,7 @@
 #include <exception>
 #include <glm/glm.hpp>
 #include <SDL2/SDL_events.h>
+#include "imgui_impl_sdl2.h"
 #include "MyWindow.h"
 using namespace std;
 
@@ -43,6 +44,11 @@ static bool processEvents() {
 		switch (event.type) {
 		case SDL_QUIT:
 			return false;
+			break;
+
+		default:
+			ImGui_ImplSDL2_ProcessEvent(&event);
+			break;
 		}
 	}
 	return true;
@@ -55,7 +61,7 @@ int main(int argc, char** argv) {
 
 	while (processEvents()) {
 		const auto t0 = hrclock::now();
-		display_func();
+		display_func(); 
 		window.swapBuffers();
 		const auto t1 = hrclock::now();
 		const auto dt = t1 - t0;
