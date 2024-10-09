@@ -37,17 +37,39 @@ static void draw_triangle(const u8vec4& color, const vec3& center, double size) 
 
 static void display_func() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glRotatef(5.0f, 0.0f, 1.0f, 0.0f);
-	glBegin(GL_TRIANGLES);
-	glVertex3f(-1.0f, 1.0f, 0.0f);  
-	glVertex3f(-1.0f, -1.0f, 0.0f); 
-	glVertex3f(1.0f, 1.0f, 0.0f);
+	glRotatef(5.0f, 0.0f, 1.0f, 0.0f);
 
-	glVertex3f(-1.0f, -1.0f, 0.0f);
-	glVertex3f(1.0f, -1.0f, 0.0f); 
-	glVertex3f(1.0f, 1.0f, 0.0f);
+	glBegin(GL_TRIANGLES);  // draw a cube with 12 triangles
+	// front face =================
+	glVertex3f(0.0f, 0.0f, 0.f);    // v0-v1-v2
+	glVertex3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(1.0f, -1.0f, 0.0f);
 
-	glEnd();
+	glVertex3f(1.0f, -1.0f, 0.0f);    // v2-v3-v0
+	glVertex3f(0.0f, -1.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+
+	// right face =================
+	glVertex3f(0.0f, 0.0f, 0.0f);    // v0-v3-v4
+	glVertex3f(0.0f, -1.0f, 0.0f);
+	glVertex3f(0.0f, -1.0f, -1.0f);
+
+	glVertex3f(0.0f, -1.0f, -1.0f);    // v4-v5-v0
+	glVertex3f(0.0f, 0.0f, -1.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+
+	// top face ===================
+	glVertex3f(0.0f, 0.0f, 0.0f);    // v0-v5-v6
+	glVertex3f(0.0f, 0.0f, -1.0f);
+	glVertex3f(1.0f, 0.0f, -1.0f);
+
+	glVertex3f(1.0f, 0.0f, -1.0f);    // v6-v1-v0
+	glVertex3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+
+	//...                 // draw other 3 faces
+
+		glEnd();
 }
 
 static bool processEvents() {
