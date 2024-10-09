@@ -24,6 +24,7 @@ static void init_openGL() {
 	glClearColor(0.5, 0.5, 0.5, 1.0);
 }
 
+/*
 static void draw_triangle(const u8vec4& color, const vec3& center, double size) {
 	glColor4ub(color.r, color.g, color.b, color.a);
 	glBegin(GL_TRIANGLES);
@@ -32,10 +33,15 @@ static void draw_triangle(const u8vec4& color, const vec3& center, double size) 
 	glVertex3d(center.x + size, center.y - size, center.z);
 	glEnd();
 }
+*/
 
 static void display_func() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	draw_triangle(u8vec4(255, 0, 0, 255), vec3(0.0, 0.0, 0.0), 0.5);
+	glLineWidth(2.0f);
+	glBegin(GL_LINES);
+	glVertex3f(0.f, 0.f, 0.f);
+	glVertex3f(0.f, 10.f, 0.f);
+	glEnd();
 }
 
 static bool processEvents() {
