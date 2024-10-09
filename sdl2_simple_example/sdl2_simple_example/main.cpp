@@ -37,10 +37,11 @@ static void draw_triangle(const u8vec4& color, const vec3& center, double size) 
 
 static void display_func() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLineWidth(2.0f);
-	glBegin(GL_LINES);
-	glVertex3f(0.f, 0.f, 0.f);
-	glVertex3f(0.f, 10.f, 0.f);
+	glLineWidth(10.0f);//grosor de linea
+	glBegin(GL_TRIANGLES);
+	glVertex3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(-1.0f, -1.0f, 0.0f);
+	glVertex3f(1.0f, -1.0f, 0.0f);
 	glEnd();
 }
 
