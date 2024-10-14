@@ -24,16 +24,35 @@ static void init_openGL() {
 	glClearColor(0.5, 0.5, 0.5, 1.0);
 }
 
-/*
-static void draw_triangle(const u8vec4& color, const vec3& center, double size) {
-	glColor4ub(color.r, color.g, color.b, color.a);
-	glBegin(GL_TRIANGLES);
-	glVertex3d(center.x, center.y + size, center.z);
-	glVertex3d(center.x - size, center.y - size, center.z);
-	glVertex3d(center.x + size, center.y - size, center.z);
-	glEnd();
-}
-*/
+GLfloat vertices[] = {
+	//delante
+	0.0f,  0.0f,  0.0f,   1.0f,  0.0f,  0.0f,   1.0f, -1.0f,  0.0f,   0.0f, -1.0f,  0.0f,  
+	//derecha
+	0.0f,  0.0f,  0.0f,   0.0f, -1.0f,  0.0f,   0.0f, -1.0f, -1.0f,   0.0f,  0.0f, -1.0f,  
+	//arriba
+	0.0f,  0.0f,  0.0f,   0.0f,  0.0f, -1.0f,   1.0f,  0.0f, -1.0f,   1.0f,  0.0f,  0.0f, 
+	//abajo
+	1.0f, -1.0f,  0.0f,   1.0f, -1.0f, -1.0f,   0.0f, -1.0f, -1.0f,   0.0f, -1.0f,  0.0f,  
+	//atras
+	1.0f,  0.0f, -1.0f,   0.0f,  0.0f, -1.0f,   0.0f, -1.0f, -1.0f,   1.0f, -1.0f, -1.0f,  
+	//izquierda
+	1.0f,  0.0f,  0.0f,   1.0f,  0.0f, -1.0f,   1.0f, -1.0f, -1.0f,   1.0f, -1.0f,  0.0f  
+};
+
+GLuint indices[] = {
+	// delante
+	0, 1, 2,  2, 3, 0,
+	// derecha
+	4, 5, 6,  6, 7, 4,
+	// arriba
+	8, 9, 10,  10, 11, 8,
+	// abajo
+	12, 13, 14,  14, 15, 12,
+	// atrás
+	16, 17, 18,  18, 19, 16,
+	// izquierda
+	20, 21, 22,  22, 23, 20
+};
 
 static void display_func() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -45,73 +64,94 @@ static void display_func() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(3.0f, 3.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-	
+
 	static float angle = 0.0f;
 	angle += 0.1f;
 
 	glRotatef(angle, 0.0f, 1.0f, 0.0f);
 
-	glBegin(GL_TRIANGLES);  // draw a cube with 12 triangles
-	// front face =================
-	glVertex3f(0.0f, 0.0f, 0.0f);    // v0-v1-v2
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, -1.0f, 0.0f);
-	glColor4f(1.0f, 0.0f, 0.0f, 0.0f);//red
+	/*
+		glBegin(GL_TRIANGLES);  // draw a cube with 12 triangles
+		// front face =================
+		glVertex3f(0.0f, 0.0f, 0.0f);    // v0-v1-v2
+		glVertex3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(1.0f, -1.0f, 0.0f);
+		glColor4f(1.0f, 0.0f, 0.0f, 0.0f);//red
 
-	glVertex3f(1.0f, -1.0f, 0.0f);    // v2-v3-v0
-	glVertex3f(0.0f, -1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	/
+		glVertex3f(1.0f, -1.0f, 0.0f);    // v2-v3-v0
+		glVertex3f(0.0f, -1.0f, 0.0f);
+		glVertex3f(0.0f, 0.0f, 0.0f);
 
-	
-	// right face =================
-	glVertex3f(0.0f, 0.0f, 0.0f);    // v0-v3-v4
-	glVertex3f(0.0f, -1.0f, 0.0f);
-	glVertex3f(0.0f, -1.0f, -1.0f);
 
-	glVertex3f(0.0f, -1.0f, -1.0f);    // v4-v5-v0
-	glVertex3f(0.0f, 0.0f, -1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
 
-	// top face ===================
-	glVertex3f(0.0f, 0.0f, 0.0f);    // v0-v5-v6
-	glVertex3f(0.0f, 0.0f, -1.0f);
-	glVertex3f(1.0f, 0.0f, -1.0f);
+		// right face =================
+		glVertex3f(0.0f, 0.0f, 0.0f);    // v0-v3-v4
+		glVertex3f(0.0f, -1.0f, 0.0f);
+		glVertex3f(0.0f, -1.0f, -1.0f);
 
-	glVertex3f(1.0f, 0.0f, -1.0f);    // v6-v1-v0F
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(0.0f, -1.0f, -1.0f);    // v4-v5-v0
+		glVertex3f(0.0f, 0.0f, -1.0f);
+		glVertex3f(0.0f, 0.0f, 0.0f);
 
-	//...                 // draw other 3 faces
-	// bottom face ===================
-	glVertex3f(1.0f, -1.0f, 0.0f);    // v3-v2-v7
-	glVertex3f(1.0f, -1.0f, -1.0f);
-	glVertex3f(0.0f, -1.0f, -1.0f);
+		// top face ===================
+		glVertex3f(0.0f, 0.0f, 0.0f);    // v0-v5-v6
+		glVertex3f(0.0f, 0.0f, -1.0f);
+		glVertex3f(1.0f, 0.0f, -1.0f);
 
-	glVertex3f(0.0f, -1.0f, -1.0f);    // v7-v4-v3
-	glVertex3f(0.0f, -1.0f, 0.0f);
-	glVertex3f(1.0f, -1.0f, 0.0f);
+		glVertex3f(1.0f, 0.0f, -1.0f);    // v6-v1-v0F
+		glVertex3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(0.0f, 0.0f, 0.0f);
 
-	// back face =====================
-	glVertex3f(1.0f, 0.0f, -1.0f);    // v6-v5-v4
-	glVertex3f(0.0f, 0.0f, -1.0f);
-	glVertex3f(0.0f, -1.0f, -1.0f);
+		//...                 // draw other 3 faces
+		// bottom face ===================
+		glVertex3f(1.0f, -1.0f, 0.0f);    // v3-v2-v7
+		glVertex3f(1.0f, -1.0f, -1.0f);
+		glVertex3f(0.0f, -1.0f, -1.0f);
 
-	glVertex3f(0.0f, -1.0f, -1.0f);    // v4-v7-v6
-	glVertex3f(1.0f, -1.0f, -1.0f);
-	glVertex3f(1.0f, 0.0f, -1.0f);
+		glVertex3f(0.0f, -1.0f, -1.0f);    // v7-v4-v3
+		glVertex3f(0.0f, -1.0f, 0.0f);
+		glVertex3f(1.0f, -1.0f, 0.0f);
 
-	// left face ===================
-	glVertex3f(1.0f, 0.0f, 0.0f);    // v1-v6-v7
-	glVertex3f(1.0f, 0.0f, -1.0f);
-	glVertex3f(1.0f, -1.0f, -1.0f);
+		// back face =====================
+		glVertex3f(1.0f, 0.0f, -1.0f);    // v6-v5-v4
+		glVertex3f(0.0f, 0.0f, -1.0f);
+		glVertex3f(0.0f, -1.0f, -1.0f);
 
-	glVertex3f(1.0f, -1.0f, -1.0f);    // v7-v2-v1
-	glVertex3f(1.0f, -1.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	
-		glEnd();
+		glVertex3f(0.0f, -1.0f, -1.0f);    // v4-v7-v6
+		glVertex3f(1.0f, -1.0f, -1.0f);
+		glVertex3f(1.0f, 0.0f, -1.0f);
+
+		// left face ===================
+		glVertex3f(1.0f, 0.0f, 0.0f);    // v1-v6-v7
+		glVertex3f(1.0f, 0.0f, -1.0f);
+		glVertex3f(1.0f, -1.0f, -1.0f);
+
+		glVertex3f(1.0f, -1.0f, -1.0f);    // v7-v2-v1
+		glVertex3f(1.0f, -1.0f, 0.0f);
+		glVertex3f(1.0f, 0.0f, 0.0f);
+
+			glEnd();
+		*/
+	 //Esto es cubo de forma directa
+
+	//lo pone
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+
+	//punteros a vertices y colores
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+
+	//colorin colorado, aqui estan los colores pintados
+	//glColorPointer(4, GL_FLOAT, 0, colors); 
+
+	// Dibuja el cubo usando el array de índices
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, indices);
+
+	//lo quita 
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
 }
+
 
 static bool processEvents() {
 	SDL_Event event;
