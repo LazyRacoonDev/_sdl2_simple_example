@@ -13,7 +13,7 @@ using u8vec4 = glm::u8vec4;
 using ivec2 = glm::ivec2;
 using vec3 = glm::dvec3;
 
-static const ivec2 WINDOW_SIZE(512, 512);
+static const ivec2 WINDOW_SIZE(1024, 1024);
 static const unsigned int FPS = 60;
 static const auto FRAME_DT = 1.0s / FPS;
 
@@ -37,18 +37,33 @@ static void draw_triangle(const u8vec4& color, const vec3& center, double size) 
 
 static void display_func() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glRotatef(5.0f, 0.0f, 1.0f, 0.0f);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45.0f, 1.0f, 0.1f, 100.0f);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(3.0f, 3.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	
+	static float angle = 0.0f;
+	angle += 0.1f;
+
+	glRotatef(angle, 0.0f, 1.0f, 0.0f);
 
 	glBegin(GL_TRIANGLES);  // draw a cube with 12 triangles
 	// front face =================
-	glVertex3f(0.0f, 0.0f, 0.f);    // v0-v1-v2
+	glVertex3f(0.0f, 0.0f, 0.0f);    // v0-v1-v2
 	glVertex3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(1.0f, -1.0f, 0.0f);
+	glColor4f(1.0f, 0.0f, 0.0f, 0.0f);//red
 
 	glVertex3f(1.0f, -1.0f, 0.0f);    // v2-v3-v0
 	glVertex3f(0.0f, -1.0f, 0.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f);
+	/
 
+	
 	// right face =================
 	glVertex3f(0.0f, 0.0f, 0.0f);    // v0-v3-v4
 	glVertex3f(0.0f, -1.0f, 0.0f);
@@ -63,12 +78,38 @@ static void display_func() {
 	glVertex3f(0.0f, 0.0f, -1.0f);
 	glVertex3f(1.0f, 0.0f, -1.0f);
 
-	glVertex3f(1.0f, 0.0f, -1.0f);    // v6-v1-v0
+	glVertex3f(1.0f, 0.0f, -1.0f);    // v6-v1-v0F
 	glVertex3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f);
 
 	//...                 // draw other 3 faces
+	// bottom face ===================
+	glVertex3f(1.0f, -1.0f, 0.0f);    // v3-v2-v7
+	glVertex3f(1.0f, -1.0f, -1.0f);
+	glVertex3f(0.0f, -1.0f, -1.0f);
 
+	glVertex3f(0.0f, -1.0f, -1.0f);    // v7-v4-v3
+	glVertex3f(0.0f, -1.0f, 0.0f);
+	glVertex3f(1.0f, -1.0f, 0.0f);
+
+	// back face =====================
+	glVertex3f(1.0f, 0.0f, -1.0f);    // v6-v5-v4
+	glVertex3f(0.0f, 0.0f, -1.0f);
+	glVertex3f(0.0f, -1.0f, -1.0f);
+
+	glVertex3f(0.0f, -1.0f, -1.0f);    // v4-v7-v6
+	glVertex3f(1.0f, -1.0f, -1.0f);
+	glVertex3f(1.0f, 0.0f, -1.0f);
+
+	// left face ===================
+	glVertex3f(1.0f, 0.0f, 0.0f);    // v1-v6-v7
+	glVertex3f(1.0f, 0.0f, -1.0f);
+	glVertex3f(1.0f, -1.0f, -1.0f);
+
+	glVertex3f(1.0f, -1.0f, -1.0f);    // v7-v2-v1
+	glVertex3f(1.0f, -1.0f, 0.0f);
+	glVertex3f(1.0f, 0.0f, 0.0f);
+	
 		glEnd();
 }
 
