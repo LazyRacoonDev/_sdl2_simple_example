@@ -54,6 +54,44 @@ GLuint indices[] = {
 	20, 21, 22,  22, 23, 20
 };
 
+GLfloat colors[] = {
+	//delante rojo
+	1.0f, 0.0f, 0.0f, 1.0f,  
+	1.0f, 0.0f, 0.0f, 1.0f, 
+	1.0f, 0.0f, 0.0f, 1.0f,  
+	1.0f, 0.0f, 0.0f, 1.0f,  
+
+	//derecha verde
+	0.0f, 1.0f, 0.0f, 1.0f,  
+	0.0f, 1.0f, 0.0f, 1.0f,  
+	0.0f, 1.0f, 0.0f, 1.0f, 
+	0.0f, 1.0f, 0.0f, 1.0f,  
+
+	//arrriba azul
+	0.0f, 0.0f, 1.0f, 1.0f,  
+	0.0f, 0.0f, 1.0f, 1.0f,  
+	0.0f, 0.0f, 1.0f, 1.0f, 
+	0.0f, 0.0f, 1.0f, 1.0f,  
+
+	//abajo amarillo
+	1.0f, 1.0f, 0.0f, 1.0f,  
+	1.0f, 1.0f, 0.0f, 1.0f, 
+	1.0f, 1.0f, 0.0f, 1.0f, 
+	1.0f, 1.0f, 0.0f, 1.0f,  
+
+	//atras cian
+	0.0f, 1.0f, 1.0f, 1.0f,  
+	0.0f, 1.0f, 1.0f, 1.0f,  
+	0.0f, 1.0f, 1.0f, 1.0f,  
+	0.0f, 1.0f, 1.0f, 1.0f,  
+
+	//izquierda magenta
+	1.0f, 0.0f, 1.0f, 1.0f,  
+	1.0f, 0.0f, 1.0f, 1.0f,  
+	1.0f, 0.0f, 1.0f, 1.0f,  
+	1.0f, 0.0f, 1.0f, 1.0f   
+};
+
 static void display_func() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -142,7 +180,7 @@ static void display_func() {
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 
 	//colorin colorado, aqui estan los colores pintados
-	//glColorPointer(4, GL_FLOAT, 0, colors); 
+	glColorPointer(4, GL_FLOAT, 0, colors); 
 
 	// Dibuja el cubo usando el array de índices
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, indices);
