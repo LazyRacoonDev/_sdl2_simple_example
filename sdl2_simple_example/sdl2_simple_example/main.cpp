@@ -92,24 +92,27 @@ GLfloat colors[] = {
 	1.0f, 0.0f, 1.0f, 1.0f   
 };
 
+GLfloat texCoords[] = {
+	// delante
+	0.0f, 0.0f,   1.0f, 0.0f,   1.0f, 1.0f,   0.0f, 1.0f,
 
+	// derecha
+	0.0f, 0.0f,   1.0f, 0.0f,   1.0f, 1.0f,   0.0f, 1.0f,
 
-static void display_func() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// arriba
+	0.0f, 0.0f,   1.0f, 0.0f,   1.0f, 1.0f,   0.0f, 1.0f,
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45.0f, 1.0f, 0.1f, 100.0f);
+	// abajo
+	0.0f, 0.0f,   1.0f, 0.0f,   1.0f, 1.0f,   0.0f, 1.0f,
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(3.0f, 3.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	// atrás
+	0.0f, 0.0f,   1.0f, 0.0f,   1.0f, 1.0f,   0.0f, 1.0f,
 
-	static float angle = 0.0f;
-	angle += 0.1f;
+	// izquierda
+	0.0f, 0.0f,   1.0f, 0.0f,   1.0f, 1.0f,   0.0f, 1.0f
+};
 
-	glRotatef(angle, 0.0f, 1.0f, 0.0f);
-
+void renderTexture(){
 	GLubyte checkerImage[64][64][4];
 	for (int i = 0; i < 64; i++) {
 		for (int j = 0; j < 64; j++) {
@@ -133,6 +136,26 @@ static void display_func() {
 		GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
 
 	glEnable(GL_TEXTURE_2D);
+
+}
+
+static void display_func() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45.0f, 1.0f, 0.1f, 100.0f);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(3.0f, 3.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+
+	static float angle = 0.0f;
+	angle += 0.1f;
+
+	glRotatef(angle, 0.0f, 1.0f, 0.0f);
+
+	renderTexture();
 
 
 	/*
@@ -202,12 +225,16 @@ static void display_func() {
 	//lo pone
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	//punteros a vertices y colores
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 
 	//colorin colorado, aqui estan los colores pintados
-	glColorPointer(4, GL_FLOAT, 0, colors); 
+	glColorPointer(4, GL_FLOAT, 0, colors);
+
+	//textura
+	glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
 
 	// Dibuja el cubo usando el array de índices
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, indices);
