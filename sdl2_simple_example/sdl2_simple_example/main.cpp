@@ -222,7 +222,7 @@ static void display_func() {
 		*/
 	 //Esto es cubo de forma directa
 
-	//lo pone
+	//Activa las cosas
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -239,12 +239,11 @@ static void display_func() {
 	// Dibuja el cubo usando el array de índices
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, indices);
 
-	//lo quita 
+	//Desactiva las cosas
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
-
 
 static bool processEvents() {
 	SDL_Event event;
