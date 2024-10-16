@@ -6,6 +6,8 @@
 #include <SDL2/SDL_events.h>
 #include "imgui_impl_sdl2.h"
 #include "MyWindow.h"
+#include "IL/il.h"
+#include "Windows.h"
 using namespace std;
 
 using hrclock = chrono::high_resolution_clock;
@@ -23,6 +25,19 @@ static void init_openGL() {
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.5, 0.5, 0.5, 1.0);
 }
+
+static void init_deviL() {
+	ilInit();
+}
+
+wchar_t* convertToWideString(const char* str) {
+	int length = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, 0);
+	wchar_t* wideStr = new wchar_t[length];
+	MultiByteToWideChar(CP_UTF8, 0, str, -1, wideStr, length);
+	return wideStr;
+}
+
+
 
 GLfloat vertices[] = {
 	//delante
@@ -112,7 +127,45 @@ GLfloat texCoords[] = {
 	0.0f, 0.0f,   1.0f, 0.0f,   1.0f, 1.0f,   0.0f, 1.0f
 };
 
+GLuint ImageTexture() {
+
+	//Genera ID de la foto
+	ILuint imageID;
+	ilGenImages(1, &imageID);
+	ilBindImage(imageID);
+
+	ilLoadImage((const wchar_t*)"MinecraftFace.png");
+
+	// Convert the image to RGBA format
+	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+	// Generate texture
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	// Set texture parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Use linear filtering for better quality
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	// Upload texture data
+	GLubyte* imageData = ilGetData();
+	if (imageData) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH),
+			ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+	}
+
+	// Cleanup
+	ilDeleteImages(1, &imageID); // Delete image from DevIL
+
+	return textureID; // Return the texture ID
+}
+
 void renderTexture(){
+
+	
 	GLubyte checkerImage[64][64][4];
 	for (int i = 0; i < 64; i++) {
 		for (int j = 0; j < 64; j++) {
@@ -123,7 +176,7 @@ void renderTexture(){
 			checkerImage[i][j][3] = (GLubyte)255;
 		}
 	}
-
+	
 	GLuint textureID;
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, &textureID);
@@ -155,7 +208,9 @@ static void display_func() {
 
 	glRotatef(angle, 0.0f, 1.0f, 0.0f);
 
-	renderTexture();
+	//renderTexture();
+
+	ImageTexture();
 
 
 	/*
@@ -265,6 +320,7 @@ int main(int argc, char** argv) {
 	MyWindow window("SDL2 Simple Example", WINDOW_SIZE.x, WINDOW_SIZE.y);
 
 	init_openGL();
+	init_deviL();
 
 	while (processEvents()) {
 		const auto t0 = hrclock::now();
